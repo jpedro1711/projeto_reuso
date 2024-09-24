@@ -1,0 +1,48 @@
+.sidebar-content {
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.sidebar-title {
+  margin: 20px 0; /* Espaçamento em cima e embaixo do título */
+  font-size: 24px; /* Ajuste o tamanho do título conforme necessário */
+  text-align: center; /* Centraliza o título */
+}
+
+.nav-links {
+  flex-grow: 1; /* Permite que a nav ocupe o espaço restante */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza os links verticalmente */
+}
+
+.nav-link.active {
+  color: #c00a0a; /* Cor do texto quando ativo */
+  font-weight: bold; /* Deixe em negrito se quiser */
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  margin: 10px 0; /* Espaçamento entre os links */
+}
+
+.nav-link:hover {
+  color: #ddd; /* Muda a cor ao passar o mouse */
+}
+
+.nav-link svg {
+  margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+}
+
+.sidebar-footer {
+  margin-top: auto; 
+  text-align: center; 
+}
