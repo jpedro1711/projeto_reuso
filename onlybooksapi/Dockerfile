@@ -1,31 +1,24 @@
-# Estágio base
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+RUN apt-get update && apt-get install -y telnet
+
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
-ENV ASPNETCORE_ENVIRONMENT=Development
 
-# Estágio build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-
-# Copie o arquivo de projeto e restaure as dependências
-COPY ["OnlyBooksApi.csproj", "."]
-RUN dotnet restore "./OnlyBooksApi.csproj"
-
-# Copie o restante do código-fonte e construa a aplicação
+COPY ["OnlyBooksApi.Application/OnlyBooksApi.Application.csproj", "OnlyBooksApi.Application/"]
+COPY ["OnlyBooksApi.Core/OnlyBooksApi.Core.csproj", "OnlyBooksApi.Core/"]
+COPY ["OnlyBooksApi.Infrastructure/OnlyBooksApi.Infrastructure.csproj", "OnlyBooksApi.Infrastructure/"]
+COPY ["OnlyBooksApi.Web/OnlyBooksApi.Web.csproj", "OnlyBooksApi.Web/"]
+RUN dotnet restore "OnlyBooksApi.Web/OnlyBooksApi.Web.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "OnlyBooksApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "OnlyBooksApi.Web/OnlyBooksApi.Web.csproj" -c Release -o /app/build
 
-# Estágio publish
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "OnlyBooksApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "OnlyBooksApi.Web/OnlyBooksApi.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Estágio final
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "OnlyBooksApi.dll"]
+ENTRYPOINT ["dotnet", "OnlyBooksApi.Web.dll"]
