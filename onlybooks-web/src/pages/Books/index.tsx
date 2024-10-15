@@ -11,11 +11,8 @@ const Books = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://onlybookscontainerapp.yellowocean-3bc779a1.northeurope.azurecontainerapps.io/Livro"
-        );
+        const response = await axios.get("/api/Livro");
         setBooks(response.data);
-        console.log(books);
       } catch (error) {
         console.error(error);
         throw error;
@@ -27,13 +24,22 @@ const Books = () => {
     fetchData();
   }, []);
 
+  const handleDeleteBook = async (id: number) => {
+    try {
+      await axios.delete(`/api/Livro?id=${id}`);
+      setBooks(books.filter((book: any) => book.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir o livro:", error);
+    }
+  };
+
   return (
     <div>
       <NavBar />
       <Grid
         container
         spacing={2}
-        style={{ padding: "16px", marginTop: "64px", justifyContent: "center" }} // Centraliza os cards
+        style={{ padding: "16px", marginTop: "64px", justifyContent: "center" }} 
       >
         {books.map((book: any) => (
           <Grid
@@ -50,6 +56,7 @@ const Books = () => {
               author={book.autor}
               genre={book.genero.nome}
               status={book.status}
+              onDelete={handleDeleteBook} 
             />
           </Grid>
         ))}

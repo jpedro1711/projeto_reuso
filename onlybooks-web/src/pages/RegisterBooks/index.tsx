@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
-import "./style.css"; // Importando o arquivo CSS
+import "./style.css"; 
+import RegisterGender from "../../components/RegisterGender";
 
 const RegisterBooks = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,13 +11,14 @@ const RegisterBooks = () => {
   const [generos, setGeneros] = useState([]);
   const [generoSelecionado, setGeneroSelecionado] = useState(null);
 
+  const [openModal, setOpenModal] = useState(false); // Controle do modal
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://onlybookscontainerapp.yellowocean-3bc779a1.northeurope.azurecontainerapps.io/GeneroLivro"
-        );
+        const response = await axios.get("/api/GeneroLivro");
         setGeneros(response.data);
+        console.log(generos);
       } catch (error) {
         console.error(error);
       } finally {
@@ -36,10 +38,7 @@ const RegisterBooks = () => {
         generoLivroId: generoSelecionado,
       };
 
-      await axios.post(
-        "https://onlybookscontainerapp.yellowocean-3bc779a1.northeurope.azurecontainerapps.io/Livro",
-        payload
-      );
+      await axios.post("/api/Livro", payload);
       alert("Livro cadastrado com sucesso!");
     } catch (error) {
       console.error("Erro ao cadastrar o livro:", error);
@@ -47,13 +46,15 @@ const RegisterBooks = () => {
     }
   };
 
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   return (
     <div>
       <NavBar />
       <div className="container-register">
-        
         <div className="card-register">
-        <h2>Cadastrar Livro</h2>
+          <h2>Cadastrar Livro</h2>
           <hr />
           {isLoading ? (
             <p>Carregando...</p>
@@ -95,15 +96,28 @@ const RegisterBooks = () => {
                   </option>
                 ))}
               </select>
+
               <div className="button-div">
                 <button type="submit" className="button-register">
                   Cadastrar
+                </button>
+              </div>
+
+              <div className="button-div">
+                <button
+                  type="button"
+                  className="button-gender"
+                  onClick={handleOpenModal}
+                >
+                  Novo Genero
                 </button>
               </div>
             </form>
           )}
         </div>
       </div>
+
+      <RegisterGender open={openModal} onClose={handleCloseModal} />
     </div>
   );
 };

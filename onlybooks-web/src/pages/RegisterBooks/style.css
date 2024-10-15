@@ -9,10 +9,10 @@
 }
 
 .card-register {
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 80%;
   max-width: 650px;
   background-color: white;
@@ -26,16 +26,16 @@ h2 {
   margin-bottom: 20px;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   max-width: 600px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-bottom: 15px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
-
 
 .button-register {
   width: 70%;
@@ -48,11 +48,21 @@ input, select {
   font-size: 16px;
 }
 
-
 .button-div {
   margin-top: 10px;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
+}
+
+.button-gender {
+  width: 70%;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: white;
+  border-color: #b30000;
+  color: #b30000;
 }
 
 /* Adicionando estilo ao botão ao passar o mouse */

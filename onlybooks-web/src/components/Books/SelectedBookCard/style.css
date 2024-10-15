@@ -1,0 +1,9 @@
+.card {
+  margin: "16px";
+  border: "3px solid #b30000";
+  border-color: "#b30000";
+  border-radius: "8px";
+  transition: "transform 0.2s";
+  width: "350px";
+  height: "250px";
+}

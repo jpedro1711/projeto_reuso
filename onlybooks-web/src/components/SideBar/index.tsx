@@ -17,12 +17,22 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
+type SubmenuType = 'books' | 'borrows' | 'reserves';
+
+
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
   const location = useLocation();
-  const [submenuOpen, setSubmenuOpen] = useState(false); // Estado para controlar o submenu
-
-  const toggleSubmenu = () => {
-    setSubmenuOpen(!submenuOpen);
+  const [submenus, setSubmenus] = useState({
+    books: false,
+    borrows: false,
+    reserves: false,
+  });
+  
+  const toggleSubmenu = (submenu: SubmenuType) => {
+    setSubmenus((prev) => ({
+      ...prev,
+      [submenu]: !prev[submenu],
+    }));
   };
 
   return (
@@ -40,17 +50,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
           </NavLink>
           <div
             className="nav-link"
-            onClick={toggleSubmenu}
+            onClick={() => toggleSubmenu("books")}
             style={{ cursor: "pointer" }}
           >
             <BookIcon /> Livros{" "}
-            {submenuOpen ? (
+            {submenus.books ? (
               <ExpandLessIcon style={{ marginLeft: "auto" }} />
             ) : (
               <ExpandMoreIcon style={{ marginLeft: "auto" }} />
             )}
           </div>
-          {submenuOpen && (
+          {submenus.books && (
             <div style={{ paddingLeft: "20px" }}>
               <NavLink
                 as={Link}
@@ -72,24 +82,74 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
               </NavLink>
             </div>
           )}
-          <NavLink
-            as={Link}
-            to="/borrows"
-            className={`nav-link ${
-              location.pathname === "/borrows" ? "active" : ""
-            }`}
+          <div
+            className="nav-link"
+            onClick={() => toggleSubmenu("borrows")}
+            style={{ cursor: "pointer" }}
           >
             <LoanIcon /> Empréstimos
-          </NavLink>
-          <NavLink
-            as={Link}
-            to="/reserve"
-            className={`nav-link ${
-              location.pathname === "/reserve" ? "active" : ""
-            }`}
+            {submenus.borrows ? (
+              <ExpandLessIcon style={{ marginLeft: "auto" }} />
+            ) : (
+              <ExpandMoreIcon style={{ marginLeft: "auto" }} />
+            )}
+            </div>
+            {submenus.borrows && (
+            <div style={{ paddingLeft: "20px" }}>
+              <NavLink
+                as={Link}
+                to="/borrows"
+                className={`nav-link ${
+                  location.pathname === "/borrows" ? "active" : ""
+                }`}
+              >
+                Visualização Emprestimos
+              </NavLink>
+              <NavLink
+                as={Link}
+                to="/borrows/register"
+                className={`nav-link ${
+                  location.pathname === "/borrows/register" ? "active" : ""
+                }`}
+              >
+                Cadastro de Emprestimos
+              </NavLink>
+            </div>
+          )}
+          <div
+            className="nav-link"
+            onClick={() => toggleSubmenu("reserves")}
+            style={{ cursor: "pointer" }}
           >
             <ReservationIcon /> Reservas
-          </NavLink>
+            {submenus.reserves ? (
+              <ExpandLessIcon style={{ marginLeft: "auto" }} />
+            ) : (
+              <ExpandMoreIcon style={{ marginLeft: "auto" }} />
+            )}
+            </div>
+            {submenus.reserves && (
+            <div style={{ paddingLeft: "20px" }}>
+              <NavLink
+                as={Link}
+                to="/reserves"
+                className={`nav-link ${
+                  location.pathname === "/reserves" ? "active" : ""
+                }`}
+              >
+                Visualização de Reservas
+              </NavLink>
+              <NavLink
+                as={Link}
+                to="/reserves/register"
+                className={`nav-link ${
+                  location.pathname === "/reserves/register" ? "active" : ""
+                }`}
+              >
+                Cadastro de Reservas
+              </NavLink>
+            </div>
+          )}
         </Nav>
         <hr />
         <div className="sidebar-footer">
